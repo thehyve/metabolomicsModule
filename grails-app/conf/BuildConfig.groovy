@@ -13,20 +13,28 @@ grails.project.dependency.resolution = {
     }
     log "warn" // log level of Ivy resolver, either 'error', 'warn', 'info', 'debug' or 'verbose'
     repositories {
-        grailsPlugins()
-        grailsHome()
         grailsCentral()
-		mavenCentral()
+        grailsRepo "http://grails.org/plugins"
+        mavenCentral()
 
-        mavenRepo "http://nexus.nmcdsp.org/content/repositories/releases"
-		mavenRepo "http://grails.org/plugins"
+        // grails 1.3.9 does not seem to properly inherit maven repo's from plugins
+        // so explicitely put ontocat in here. When upgraded to Grails 2.x this can
+        // probably be removed
+        // mavenRepo "http://ontocat.sourceforge.net/maven/repo"
+
+        // other maven repo's
+        mavenRepo "http://nexus.dbnp.org/content/repositories/releases"
+        mavenRepo "http://repository.springsource.com/maven/bundles/release"
+        mavenRepo "http://repository.springsource.com/maven/bundles/external"
+        mavenRepo "http://repository.springsource.com/maven/libraries/release"
+        mavenRepo "http://repository.springsource.com/maven/libraries/external"
     }
 	plugins {
         compile(":hibernate:$grailsVersion")
         compile ":tomcat:$grailsVersion"
 
 		compile ":dbxp-module-base:0.5.0"
-        compile ":dbxp-module-storage:0.4.1"
+        compile ":dbxp-module-storage:0.4.2"
 
 		compile ":mongodb:1.0.0.RC3"
 		compile ':famfamfam:1.0.1'
@@ -38,7 +46,7 @@ grails.project.dependency.resolution = {
 		compile ":dbxp-chemistry:0.1.2"
 
         compile ':grom:0.2.3'
-        compile ":uploadr:0.5.11"
+        compile ":uploadr:0.6.0"
         compile ':matrix-importer:0.2.3.5'
         compile ':trackr:0.7.3'
         runtime ':modernizr:2.0.6'
@@ -50,6 +58,13 @@ grails.project.dependency.resolution = {
         // runtime 'mysql:mysql-connector-java:5.1.13'
 		// runtime 'postgresql:postgresql:9.0-801.jdbc4'
 		runtime 'postgresql:postgresql:9.1-901.jdbc3'
+		runtime 'javassist:javassist:3.12.1.GA'
+        runtime('org.codehaus.groovy.modules.http-builder:http-builder:0.5.2') {
+            excludes 'xalan'
+            excludes 'xml-apis'
+            excludes 'groovy'
+        }
+
     }
 }
 
